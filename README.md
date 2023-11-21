@@ -34,7 +34,7 @@
 
 ## Introdução
 
-Projeto para manipular as informações do VExpenses atráves da API disponibilizada pela empresa. Importa salientar que para ter acesso ao *```token```* é necessário ter uma conta VExpenses (*não estou fazendo propaganda e não recebi patrocínio para esses desenvolvimento*).
+Projeto para manipular as informações do VExpenses atráves da API disponibilizada pela empresa. Importa salientar que para ter acesso ao *```token público```* para autenticação é necessário ter uma conta VExpenses (*não estou fazendo propaganda e não recebi patrocínio para esses desenvolvimento*), cada empresa possui um *```token público```* diferente.
 
 O intuito do projeto é realizar consultas simples sem interface gráfica para automatizar as atividades repetitivas, tediosas e evitar erros humanos durante essas coletas. Porém posteriormente posso pensar em realizar algumas melhorias no software facilitando ainda mais a sua utilização e agregando funcionalidades facilitadoras.
 
