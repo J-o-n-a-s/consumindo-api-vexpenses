@@ -1,0 +1,26 @@
+não lista quando excede de 09 "seleção de usuário"
+
+OPÇÃO 1 - Adiantamentos -> Somente post
+
+OPÇÃO 3 - Expenses:
+
+include (para pegar todas as informações, ou se deixar sem nada, só pega os dados básicos)
+apportionment,user,expense_type,costs_center,payment_method,report,gps
+
+search
+date:2021-01-01,2021-03-31;
+report.approval_date:2021-01-01,2021-03-31;
+payment_date:2021-01-01;
+created_at:2021-01-01;
+report.id:123
+
+searchFields
+date:between;
+report.approval_date:between;
+payment_date:>=;
+created_at:=;
+report.id:=
+
+searchJoin (só se mais de uma opção de filtro e diferente de "and")
+and, or
+
