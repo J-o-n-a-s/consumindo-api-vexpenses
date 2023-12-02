@@ -1,5 +1,3 @@
-não lista quando excede de 09 "seleção de usuário"
-
 OPÇÃO 1 - Adiantamentos -> Somente post
 
 OPÇÃO 3 - Expenses:
