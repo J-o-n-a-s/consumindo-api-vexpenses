@@ -1,15 +1,31 @@
+from os import name, system
 from time import time
 
+from file_header import END_POINTS, LINE_SIZE
 from requests import get, models
 
-# Constantes
-LINE_SIZE = 116
+
+def clear_screen() -> None:
+    try:
+        if name == 'nt':
+            system('cls')
+        else:
+            system('clear')
+    except Exception as error:
+        format_print(
+            fill_char=' ',
+            line_size=LINE_SIZE,
+            text=f'Falha ao limpar a tela. Ocorreu erro na classe -> {error.__class__}'
+        )
+        del error
 
 
 def connection(headers: dict, url: str) -> list:
     start_time = time()
     response = models.Response
     result = False
+    division(number=1)
+
     try:
         response = get(headers=headers, url=url)
     except Exception as error:
@@ -41,7 +57,7 @@ def connection(headers: dict, url: str) -> list:
             line_size=LINE_SIZE,
             text=f'O tempo de execução foi {execution_time} s.'
         )
-        format_print(fill_char='-', line_size=LINE_SIZE, text='')
+
         del start_time, final_time, execution_time
         return [result, response]
 
@@ -65,6 +81,11 @@ def create_table(datas: list, options: list, user: int) -> list:
     return table
 
 
+def division(number: int = 1) -> None:
+    for value in range(number):
+        format_print(fill_char='-', line_size=LINE_SIZE, text='')
+
+
 def format_print(fill_char: str = ' ', line_size: int = 116, text: str = '') -> None:
     initial_chars = '| '
     final_chars = ' |'
@@ -80,7 +101,7 @@ def format_print(fill_char: str = ' ', line_size: int = 116, text: str = '') -> 
 
 def header_and_footer(option: bool = False) -> None:
     texts = [
-        '>>> VETER AUTOMAÇÃO INDUSTRIAL LTDA. <<<',
+        '>>> PROGBIN AUTOMAÇÃO INDUSTRIAL LTDA <<<',
         'Seja bem-vindo ao software de integração com o VExpenses'
     ]
 
@@ -89,14 +110,14 @@ def header_and_footer(option: bool = False) -> None:
         texts = ['Grato pela utilização. Até logo.']
 
     for number, text in enumerate(texts):
-        format_print(fill_char='-', line_size=LINE_SIZE, text='')
+        division(number=1)
         text = text.center(LINE_SIZE, ' ')
         format_print(fill_char=' ', line_size=LINE_SIZE, text=text)
 
-        if number == (len(texts) - 1):
-            format_print(fill_char='-', line_size=LINE_SIZE, text='')
-
     del number, text, texts
+
+    if option:
+        division(number=1)
 
 
 def list_options(datas: list) -> list:
@@ -104,7 +125,7 @@ def list_options(datas: list) -> list:
     select_fields = ' '
 
     while select_fields not in 'SN':
-        format_print(fill_char='-', line_size=LINE_SIZE, text='')
+        division(number=1)
 
         select_fields = (
             input(f'| Selecionar os campos que serão visualizados? [S/N] ').strip().upper()
@@ -146,16 +167,66 @@ def list_users(datas: list) -> list:
     return users
 
 
+def options_menu() -> str:
+    division(number=1)
+    menu_text = 'MENU DE OPÇÕES'.center(LINE_SIZE, ' ')
+    format_print(fill_char=' ', line_size=LINE_SIZE, text=menu_text)
+    division(number=1)
+    spacing = '0' * (len(str(len(END_POINTS))) - 1)
+    item = 0
+
+    for option in END_POINTS:
+        item += 1
+        spacing_option = spacing[0:len(spacing) - (len(str(item)) - 1)]
+        menu_text = f'-> {spacing_option + str(item)} - {option['menu']}'
+        format_print(fill_char=' ', line_size=LINE_SIZE, text=menu_text)
+
+    menu_text = f'-> {spacing}0 - Sair'
+    format_print(fill_char=' ', line_size=LINE_SIZE, text=menu_text)
+    del item, menu_text, option, spacing, spacing_option
+    division(number=1)
+    selection_ok = False
+    selection = ' '
+
+    while not selection_ok:
+        try:
+            selection = int(
+                input(
+                    '| Selecione uma das opções acima: '
+                ).strip().upper()
+            )
+        except ValueError:
+            format_print(
+                fill_char=' ',
+                line_size=LINE_SIZE,
+                text='Por gentileza, selecione uma opção válida.'
+            )
+        except Exception as error:
+            print(error.__class__)
+            format_print(
+                fill_char=' ',
+                line_size=LINE_SIZE,
+                text=f'Ocorreu erro {error.__class__} ao selecionar uma opção.'
+            )
+            del error
+        else:
+            if 0 <= selection <= len(END_POINTS):
+                selection_ok = True
+            else:
+                format_print(
+                    fill_char=' ',
+                    line_size=LINE_SIZE,
+                    text='Por gentileza, selecione uma opção válida.'
+                )
+
+    del selection_ok
+    # division(number=1)
+
+    return END_POINTS[selection - 1]['url'] if selection > 0 else ''
+
+
 def read_datas(response: models.Response) -> list:
     datas = response.json()['data']
-    len_datas = len(datas)
-    format_print(
-        fill_char=' ',
-        line_size=LINE_SIZE,
-        text=f'Ao total existem {"0" + str(len_datas) if len_datas <= 9 else len_datas} usuário(s) cadastrado(s).'
-    )
-    del len_datas
-
     return datas
 
 
@@ -163,7 +234,7 @@ def select_view() -> str:
     selection = ' '
 
     while selection not in 'GV':
-        format_print(fill_char='-', line_size=LINE_SIZE, text='')
+        division(number=1)
 
         selection = (
             input('| Deseja gravar [G] em arquivo, ou visualizar [V]? [G/V] ')
@@ -177,7 +248,7 @@ def select_view() -> str:
 def show_options(datas: list, options: list, user: int) -> None:
     for number, data in enumerate(datas):
         if number == user or user == -1:
-            format_print(fill_char='-', line_size=LINE_SIZE, text='')
+            division(number=1)
 
             for option in options:
                 format_print(
@@ -189,27 +260,29 @@ def show_options(datas: list, options: list, user: int) -> None:
     del data, number, option
 
 
-def user_selection(users: list) -> int:
-    format_print(fill_char='-', line_size=LINE_SIZE, text='')
+def option_selection(options: list) -> int:
+    division(number=1)
+    spacing = '0' * (len(str(len(options))) - 1)
 
     format_print(
         fill_char=' ',
         line_size=LINE_SIZE,
-        text='Selecione o número do usuário que deseja consultar as informações:'
+        text='Selecione o número da opção que deseja consultar as informações:'
     )
 
-    for number, user in enumerate(users):
+    for number, option in enumerate(options):
+        number += 1
         format_print(
             fill_char=' ',
             line_size=LINE_SIZE,
-            text=f'{" -> 0" + str(number + 1) if number + 1 <= 9 else number + 1} - {user}'
+            text=f' -> {spacing + str(number) if number <= 9 else number} - {option}'
         )
 
-    del number, user
+    del number, option
     format_print(
         fill_char=' ',
         line_size=LINE_SIZE,
-        text=' -> 00 - Todos os usuários'
+        text=f' -> {spacing}0 - Todas as opções'
     )
     selection_ok = False
     selection = -1
@@ -232,7 +305,7 @@ def user_selection(users: list) -> int:
             )
             del error
         else:
-            if 0 <= selection <= len(users):
+            if 0 <= selection <= len(options):
                 selection_ok = True
             else:
                 format_print(

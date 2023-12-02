@@ -3,11 +3,9 @@ from os.path import isfile
 from time import sleep
 from tkinter import filedialog
 
+from file_header import LINE_SIZE
 from functions import format_print
 from openpyxl import Workbook, load_workbook
-
-# Constantes
-LINE_SIZE = 96
 
 
 def save_file(path: str, rows: list) -> None:
