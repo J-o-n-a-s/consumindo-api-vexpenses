@@ -17,7 +17,9 @@ def clear_screen() -> None:
             line_size=LINE_SIZE,
             text=f'Falha ao limpar a tela. Ocorreu erro na classe -> {error.__class__}'
         )
-        del error
+
+        if 'error' in locals():
+            del error
 
 
 def connection(headers: dict, url: str) -> list:
@@ -34,7 +36,10 @@ def connection(headers: dict, url: str) -> list:
             line_size=LINE_SIZE,
             text=f'Falha na conexão com o VExpenses. Ocorreu erro na classe -> {error.__class__}'
         )
-        del error
+
+        if 'error' in locals():
+            del error
+
     else:
         if response.status_code == 200:
             format_print(
@@ -58,7 +63,15 @@ def connection(headers: dict, url: str) -> list:
             text=f'O tempo de execução foi {execution_time} s.'
         )
 
-        del start_time, final_time, execution_time
+        if 'start_time' in locals():
+            del start_time
+
+        if 'final_time' in locals():
+            del final_time
+
+        if 'execution_time' in locals():
+            del execution_time
+
         return [result, response]
 
 
@@ -76,9 +89,27 @@ def create_table(datas: list, options: list, user: int) -> list:
             table.append(row[:])
             row.clear()
 
-    del copy_options, data, number, option, row
+    if 'copy_options' in locals():
+        del copy_options
+
+    if 'data' in locals():
+        del data
+
+    if 'number' in locals():
+        del number
+
+    if 'option' in locals():
+        del option
+
+    if 'row' in locals():
+        del row
 
     return table
+
+
+def data_ordering(datas: list, sort_by_key: str) -> list:
+    copy_datas = sorted(datas, key=lambda dicionario: dicionario[sort_by_key])
+    return copy_datas[:]
 
 
 def division(number: int = 1) -> None:
@@ -96,7 +127,11 @@ def format_print(fill_char: str = ' ', line_size: int = 116, text: str = '') -> 
 
     print(initial_chars + text.ljust(line_size, fill_char) + final_chars)
 
-    del final_chars, initial_chars
+    if 'final_chars' in locals():
+        del final_chars
+
+    if 'initial_chars' in locals():
+        del initial_chars
 
 
 def header_and_footer(option: bool = False) -> None:
@@ -114,13 +149,20 @@ def header_and_footer(option: bool = False) -> None:
         text = text.center(LINE_SIZE, ' ')
         format_print(fill_char=' ', line_size=LINE_SIZE, text=text)
 
-    del number, text, texts
+    if 'number' in locals():
+        del number
+
+    if 'text' in locals():
+        del text
+
+    if 'texts' in locals():
+        del texts
 
     if option:
         division(number=1)
 
 
-def list_options(datas: list) -> list:
+def list_fields(datas: list) -> list:
     information = []
     select_fields = ' '
 
@@ -160,9 +202,14 @@ def list_users(datas: list) -> list:
     for number in range(len(datas)):
         user = datas[number]['name']
         users.append(user)
-        del user
 
-    del number
+        if 'user' in locals():
+            del user
+
+    if 'number' in locals():
+        del number
+
+    users.sort()
 
     return users
 
@@ -183,7 +230,22 @@ def options_menu() -> str:
 
     menu_text = f'-> {spacing}0 - Sair'
     format_print(fill_char=' ', line_size=LINE_SIZE, text=menu_text)
-    del item, menu_text, option, spacing, spacing_option
+
+    if 'item' in locals():
+        del item
+
+    if 'menu_text' in locals():
+        del menu_text
+
+    if 'option' in locals():
+        del option
+
+    if 'spacing' in locals():
+        del spacing
+
+    if 'spacing_option' in locals():
+        del spacing_option
+
     division(number=1)
     selection_ok = False
     selection = ' '
@@ -208,7 +270,9 @@ def options_menu() -> str:
                 line_size=LINE_SIZE,
                 text=f'Ocorreu erro {error.__class__} ao selecionar uma opção.'
             )
-            del error
+
+            if 'error' in locals():
+                del error
         else:
             if 0 <= selection <= len(END_POINTS):
                 selection_ok = True
@@ -219,50 +283,15 @@ def options_menu() -> str:
                     text='Por gentileza, selecione uma opção válida.'
                 )
 
-    del selection_ok
-    # division(number=1)
+    if 'selection_ok' in locals():
+        del selection_ok
 
     return END_POINTS[selection - 1]['url'] if selection > 0 else ''
 
 
-def read_datas(response: models.Response) -> list:
-    datas = response.json()['data']
-    return datas
-
-
-def select_view() -> str:
-    selection = ' '
-
-    while selection not in 'GV':
-        division(number=1)
-
-        selection = (
-            input('| Deseja gravar [G] em arquivo, ou visualizar [V]? [G/V] ')
-            .strip()
-            .upper()
-        )
-
-    return selection
-
-
-def show_options(datas: list, options: list, user: int) -> None:
-    for number, data in enumerate(datas):
-        if number == user or user == -1:
-            division(number=1)
-
-            for option in options:
-                format_print(
-                    fill_char=' ',
-                    line_size=LINE_SIZE,
-                    text=f'Para o usuário "{data['name']}" e chave "{option}" o valor é "{data[option]}".'
-                )
-
-    del data, number, option
-
-
 def option_selection(options: list) -> int:
     division(number=1)
-    spacing = '0' * (len(str(len(options))) - 1)
+    spacing = '0' * (len(str(len(options[2]))) - 1)
 
     format_print(
         fill_char=' ',
@@ -270,7 +299,7 @@ def option_selection(options: list) -> int:
         text='Selecione o número da opção que deseja consultar as informações:'
     )
 
-    for number, option in enumerate(options):
+    for number, option in enumerate(options[2]):
         number += 1
         format_print(
             fill_char=' ',
@@ -278,7 +307,12 @@ def option_selection(options: list) -> int:
             text=f' -> {spacing + str(number) if number <= 9 else number} - {option}'
         )
 
-    del number, option
+    if 'number' in locals():
+        del number
+
+    if 'option' in locals():
+        del option
+
     format_print(
         fill_char=' ',
         line_size=LINE_SIZE,
@@ -303,9 +337,11 @@ def option_selection(options: list) -> int:
                 line_size=LINE_SIZE,
                 text=f'Ocorreu erro {error.__class__} ao selecionar uma opção.'
             )
-            del error
+
+            if 'error' in locals():
+                del error
         else:
-            if 0 <= selection <= len(options):
+            if 0 <= selection <= len(options[2]):
                 selection_ok = True
             else:
                 format_print(
@@ -314,6 +350,54 @@ def option_selection(options: list) -> int:
                     text='Por gentileza, selecione uma opção válida.'
                 )
 
-    del selection_ok
+    if 'selection_ok' in locals():
+        del selection_ok
 
     return selection - 1
+
+
+def read_datas(response: models.Response) -> list:
+    datas = response.json()['data']
+    return datas
+
+
+def select_view() -> str:
+    selection = ' '
+
+    while selection not in 'GV':
+        division(number=1)
+
+        selection = (
+            input('| Deseja gravar [G] em arquivo, ou visualizar [V]? [G/V] ')
+            .strip()
+            .upper()
+        )
+
+    return selection
+
+
+def show_options(datas: list, fields: list, selected: int, options: list) -> None:
+    copy_datas = datas[:]
+    for option in options[2]:
+        for number, data in enumerate(copy_datas):
+            if option == data[options[1]]:
+                if number == selected or selected == -1:
+                    division(number=1)
+                    for field in fields:
+                        format_print(
+                            fill_char=' ',
+                            line_size=LINE_SIZE,
+                            text=f'Para {options[0]} "{data[options[1]]}" e chave "{field}" o valor é "{data[field]}".'
+                        )
+
+                copy_datas.pop(0)
+                break
+
+    if 'data' in locals():
+        del data
+
+    if 'number' in locals():
+        del number
+
+    if 'option' in locals():
+        del field

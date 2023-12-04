@@ -22,7 +22,10 @@ def save_file(path: str, rows: list) -> None:
                 line_size=LINE_SIZE,
                 text=f'Ocorreu erro ao abrir o arquivo {error.__class__}.',
             )
-            del error
+
+            if 'error' in locals():
+                del error
+
         else:
             file_is_open = True
 
@@ -35,7 +38,10 @@ def save_file(path: str, rows: list) -> None:
                 line_size=LINE_SIZE,
                 text=f'Ocorreu erro ao criar o arquivo {error.__class__}.',
             )
-            del error
+
+            if 'error' in locals():
+                del error
+
         else:
             file_is_open = True
 
@@ -53,7 +59,10 @@ def save_file(path: str, rows: list) -> None:
                     line_size=LINE_SIZE,
                     text=f'Ocorreu erro ao salvar o arquivo {error.__class__}.',
                 )
-                del error
+
+                if 'error' in locals():
+                    del error
+
             else:
                 format_print(
                     fill_char=' ',
@@ -61,10 +70,19 @@ def save_file(path: str, rows: list) -> None:
                     text=f'Arquivo "{file_name}" salvo com sucesso.',
                 )
 
-        del row, worksheet
+        if 'row' in locals():
+            del row
+
+        if 'worksheet' in locals():
+            del worksheet
+
         format_print(fill_char='-', line_size=LINE_SIZE, text='')
 
-    del file_name, workbook
+    if 'file_name' in locals():
+        del file_name
+
+    if 'workbook' in locals():
+        del workbook
 
 
 def select_path() -> str:
