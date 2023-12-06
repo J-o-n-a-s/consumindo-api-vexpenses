@@ -170,7 +170,7 @@ def list_fields(datas: list) -> list:
         division(number=1)
 
         select_fields = (
-            input(f'| Selecionar os campos que serão visualizados? [S/N] ').strip().upper()
+            input(f'| Selecionar os campos que serão visualizados? [S/N] ').strip().upper()[0]
         )
 
     keys = list(datas[0].keys())
@@ -183,7 +183,7 @@ def list_fields(datas: list) -> list:
             if select_fields == 'S':
                 while response not in 'SN':
                     response = (
-                        input(f'| Deseja visualizar "{key}"? [S/N] ').strip().upper()
+                        input(f'| Deseja visualizar "{key}"? [S/N] ').strip().upper()[0]
                     )
 
             else:
@@ -318,6 +318,10 @@ def option_selection(options: list) -> int:
         line_size=LINE_SIZE,
         text=f' -> {spacing}0 - Todas as opções'
     )
+
+    if 'spacing' in locals():
+        del spacing
+
     selection_ok = False
     selection = -1
 
@@ -371,33 +375,71 @@ def select_view() -> str:
             input('| Deseja gravar [G] em arquivo, ou visualizar [V]? [G/V] ')
             .strip()
             .upper()
+            [0]
         )
 
     return selection
 
 
+# def show_options(datas: list, fields: list, selected: int, options: list) -> None:
+#     copy_datas = datas[:]
+#     for option in options[2]:
+#         for number, data in enumerate(copy_datas):
+#             if option == data[options[1]]:
+#                 if number == selected or selected == -1:
+#                     division(number=1)
+#                     for field in fields:
+#                         format_print(
+#                             fill_char=' ',
+#                             line_size=LINE_SIZE,
+#                             text=f'Para {options[0]} "{data[options[1]]}" e chave "{field}" o valor é "{data[field]}".'
+#                         )
+#
+#                 copy_datas.pop(0)
+#                 break
+#
+#     if 'data' in locals():
+#         del data
+#
+#     if 'number' in locals():
+#         del number
+#
+#     if 'option' in locals():
+#         del field
+
 def show_options(datas: list, fields: list, selected: int, options: list) -> None:
-    copy_datas = datas[:]
-    for option in options[2]:
-        for number, data in enumerate(copy_datas):
-            if option == data[options[1]]:
-                if number == selected or selected == -1:
-                    division(number=1)
-                    for field in fields:
-                        format_print(
-                            fill_char=' ',
-                            line_size=LINE_SIZE,
-                            text=f'Para {options[0]} "{data[options[1]]}" e chave "{field}" o valor é "{data[field]}".'
-                        )
+    text = None
 
-                copy_datas.pop(0)
-                break
+    if selected == -1:
+        for number, data in enumerate(datas):
+            division(number=1)
+            text = datas[number]
+            for field in fields:
+                format_print(
+                    fill_char=' ',
+                    line_size=LINE_SIZE,
+                    text=f'Para {options[0]} "{text[options[1][0]]}" e chave "{field}" o valor é "{text[field]}".'
+                )
 
-    if 'data' in locals():
-        del data
+        if 'data' in locals():
+            del data
 
-    if 'number' in locals():
-        del number
+        if 'number' in locals():
+            del number
 
-    if 'option' in locals():
+    else:
+        division(number=1)
+        text = datas[selected]
+
+        for field in fields:
+            format_print(
+                fill_char=' ',
+                line_size=LINE_SIZE,
+                text=f'Para {options[0]} "{text[options[1][0]]}" e chave "{field}" o valor é "{text[field]}".'
+            )
+
+    if 'field' in locals():
         del field
+
+    if 'text' in locals():
+        del text

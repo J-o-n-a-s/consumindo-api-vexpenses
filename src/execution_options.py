@@ -1,5 +1,5 @@
 from file_header import LINE_SIZE
-from functions import division, format_print, list_users
+from functions import data_ordering, division, format_print, list_users
 
 
 def advances(datas: list) -> list:
@@ -12,25 +12,56 @@ def approval_flows(datas: list) -> list:
 
 def costs_centers(datas: list) -> list:
     active_cost_centers = []
+    copy_datas = []
+    filters = ['name', 'on']
     include_inactive = ' '
+    option = 'centro de custo'
+    text = ''
 
     while include_inactive not in 'SN':
         division(number=1)
 
         include_inactive = (
-            input(f'| Deseja incluir os inativos? [S/N] ').strip().upper()
+            input(f'| Deseja incluir os inativos? [S/N] ').strip().upper()[0]
         )
 
-    for data in datas:
-        if data['on'] or include_inactive == 'S':
-            active_cost_centers.append(data['name'])
+    copy_datas.append(
+        data_ordering(datas=datas, sort_by_key=filters[0])
+    )
+
+    copy_datas.append([])
+    for data in copy_datas[0]:
+        if data[filters[1]] or include_inactive == 'S':
+            copy_datas[1].append(data)
+
+    copy_datas.pop(0)
+    copy_datas = copy_datas[0]
+
+    for data in copy_datas:
+        if data[filters[1]] or include_inactive == 'S':
+            if include_inactive == 'S':
+                if data[filters[1]]:
+                    text = '(ativo)'
+                else:
+                    text = '(inativo)'
+            active_cost_centers.append(
+                data[filters[0]]
+                if include_inactive != 'S'
+                else f'{data[filters[0]]} {text}'
+            )
 
     if 'data' in locals():
         del data
 
-    active_cost_centers.sort()
+    if 'include_inactive' in locals():
+        del include_inactive
 
-    return ['centro de custo', 'name', active_cost_centers]
+    if 'text' in locals():
+        del text
+
+    # active_cost_centers.sort()
+
+    return [option, filters, active_cost_centers, copy_datas]
 
 
 def currencies(datas: list) -> list:
@@ -54,15 +85,27 @@ def reports(datas: list) -> list:
 
 
 def team_members(datas: list) -> list:
+    copy_datas = []
+    filters = ['name', 'active']
+    include_inactive = ' '
     len_datas = len(datas)
     number_of_users = '0' + str(len_datas) if len_datas <= 9 else len_datas
+    option = 'usuário'
     text = f'Ao total existe(m) {number_of_users} usuário(s) cadastrado(s).'
     division(number=1)
+
     format_print(
         fill_char=' ',
         line_size=LINE_SIZE,
         text=text,
     )
+
+    # INCLUIR VERIFICAÇÃO DE MEMBROS INATIVOS
+
+    copy_datas = data_ordering(datas=datas, sort_by_key=filters[0])
+
+    if 'include_inactive' in locals():
+        del include_inactive
 
     if 'len_datas' in locals():
         del len_datas
@@ -73,4 +116,4 @@ def team_members(datas: list) -> list:
     if 'text' in locals():
         del text
 
-    return ['usuário', 'name', list_users(datas=datas)]
+    return [option, filters, list_users(datas=datas), copy_datas]

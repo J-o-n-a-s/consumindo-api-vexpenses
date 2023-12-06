@@ -3,7 +3,7 @@ from execution_options import (advances, approval_flows, costs_centers,
                                currencies, expenses, expenses_type, projects,
                                reports, team_members)
 from file_header import HEADERS, URL
-from functions import (clear_screen, connection, create_table, data_ordering,
+from functions import (clear_screen, connection, create_table,
                        header_and_footer, list_fields, option_selection,
                        options_menu, read_datas, select_view, show_options)
 
@@ -41,7 +41,8 @@ if __name__ == '__main__':
             + '(datas=datas)'
         )
 
-        datas = data_ordering(datas=datas, sort_by_key=result_of_options[1])
+        datas = result_of_options[3]
+        result_of_options.pop(3)
         selected_option = option_selection(options=result_of_options)
 
         if select_view() == 'G':
