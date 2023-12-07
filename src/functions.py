@@ -5,6 +5,19 @@ from file_header import END_POINTS, LINE_SIZE
 from requests import get, models
 
 
+def check_inclusion_of_inactive() -> bool:
+    include_inactive = ' '
+
+    while include_inactive not in 'SN':
+        division(number=1)
+
+        include_inactive = (
+            input(f'| Deseja incluir os inativos? [S/N] ').strip().upper()[0]
+        )
+
+    return True if include_inactive == 'S' else False
+
+
 def clear_screen() -> None:
     try:
         if name == 'nt':
@@ -197,21 +210,29 @@ def list_fields(datas: list) -> list:
     return sorted(information)
 
 
-def list_users(datas: list) -> list:
-    users = list()
-    for number in range(len(datas)):
-        user = datas[number]['name']
-        users.append(user)
+def list_users(datas: list, filters: tuple, include_inactive: bool = None) -> list:
+    users = []
 
-        if 'user' in locals():
-            del user
+    for data in datas:
+        if filters[1] or include_inactive:
+            if include_inactive:
+                text = '(ativo)' if data[filters[1]] else '(inativo)'
+                user = f'{data[filters[0]]} {text}'
+            else:
+                user = data[filters[0]]
 
-    if 'number' in locals():
-        del number
+            users.append(user)
 
-    users.sort()
+    if 'data' in locals():
+        del data
 
-    return users
+    if 'text' in locals():
+        del text
+
+    if 'user' in locals():
+        del user
+
+    return users[:]
 
 
 def options_menu() -> str:
@@ -365,6 +386,27 @@ def read_datas(response: models.Response) -> list:
     return datas
 
 
+def sanitize_data(datas: list, filters: tuple, include_inactive: bool) -> list:
+    sanitized_data = []
+
+    for data in datas:
+        try:
+            copy_filter = datas[filters[1]]
+        except TypeError:
+            sanitized_data.append(data)
+        else:
+            if data[copy_filter] or include_inactive:
+                sanitized_data.append(data)
+
+    if 'copy_filter' in locals():
+        del copy_filter
+
+    if 'data' in locals():
+        del data
+
+    return data_ordering(datas=sanitized_data, sort_by_key=filters[0])
+
+
 def select_view() -> str:
     selection = ' '
 
@@ -381,65 +423,34 @@ def select_view() -> str:
     return selection
 
 
-# def show_options(datas: list, fields: list, selected: int, options: list) -> None:
-#     copy_datas = datas[:]
-#     for option in options[2]:
-#         for number, data in enumerate(copy_datas):
-#             if option == data[options[1]]:
-#                 if number == selected or selected == -1:
-#                     division(number=1)
-#                     for field in fields:
-#                         format_print(
-#                             fill_char=' ',
-#                             line_size=LINE_SIZE,
-#                             text=f'Para {options[0]} "{data[options[1]]}" e chave "{field}" o valor é "{data[field]}".'
-#                         )
-#
-#                 copy_datas.pop(0)
-#                 break
-#
-#     if 'data' in locals():
-#         del data
-#
-#     if 'number' in locals():
-#         del number
-#
-#     if 'option' in locals():
-#         del field
-
 def show_options(datas: list, fields: list, selected: int, options: list) -> None:
-    text = None
-
     if selected == -1:
         for number, data in enumerate(datas):
             division(number=1)
-            text = datas[number]
+
             for field in fields:
                 format_print(
                     fill_char=' ',
                     line_size=LINE_SIZE,
-                    text=f'Para {options[0]} "{text[options[1][0]]}" e chave "{field}" o valor é "{text[field]}".'
+                    text=f'Para {options[0]} "{options[2][number]}" e chave "{field}" o valor é "{data[field]}".'
                 )
-
-        if 'data' in locals():
-            del data
 
         if 'number' in locals():
             del number
 
     else:
         division(number=1)
-        text = datas[selected]
+        data = datas[selected]
 
         for field in fields:
             format_print(
                 fill_char=' ',
                 line_size=LINE_SIZE,
-                text=f'Para {options[0]} "{text[options[1][0]]}" e chave "{field}" o valor é "{text[field]}".'
+                text=f'Para {options[0]} "{options[2][selected]}" e chave "{field}" o valor é "{data[field]}".'
             )
+
+    if 'data' in locals():
+        del data
 
     if 'field' in locals():
         del field
-
-    if 'text' in locals():
-        del text

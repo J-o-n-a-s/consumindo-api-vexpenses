@@ -1,5 +1,6 @@
 from file_header import LINE_SIZE
-from functions import data_ordering, division, format_print, list_users
+from functions import (check_inclusion_of_inactive, division, format_print,
+                       list_users, sanitize_data)
 
 
 def advances(datas: list) -> list:
@@ -7,46 +8,47 @@ def advances(datas: list) -> list:
 
 
 def approval_flows(datas: list) -> list:
-    return ['', '', '']
+    approval_flow_list = []
+    copy_datas = []
+    filters = ('description', '')
+    title = 'fluxo de aprovação'
+
+    copy_datas = sanitize_data(
+        datas=datas, filters=filters, include_inactive=True
+    )
+
+    for data in copy_datas:
+        approval_flow_list.append(data[filters[0]])
+
+    if 'data' in locals():
+        del data
+
+    return [title, filters, approval_flow_list, copy_datas]
 
 
 def costs_centers(datas: list) -> list:
-    active_cost_centers = []
     copy_datas = []
-    filters = ['name', 'on']
-    include_inactive = ' '
-    option = 'centro de custo'
+    filters = ('name', 'on')
+    list_of_cost_centers = []
     text = ''
+    title = 'centro de custo'
 
-    while include_inactive not in 'SN':
-        division(number=1)
-
-        include_inactive = (
-            input(f'| Deseja incluir os inativos? [S/N] ').strip().upper()[0]
-        )
-
-    copy_datas.append(
-        data_ordering(datas=datas, sort_by_key=filters[0])
+    include_inactive = check_inclusion_of_inactive()
+    copy_datas = sanitize_data(
+        datas=datas, filters=filters, include_inactive=include_inactive
     )
 
-    copy_datas.append([])
-    for data in copy_datas[0]:
-        if data[filters[1]] or include_inactive == 'S':
-            copy_datas[1].append(data)
-
-    copy_datas.pop(0)
-    copy_datas = copy_datas[0]
-
     for data in copy_datas:
-        if data[filters[1]] or include_inactive == 'S':
-            if include_inactive == 'S':
+        if data[filters[1]] or include_inactive:
+            if include_inactive:
                 if data[filters[1]]:
                     text = '(ativo)'
                 else:
                     text = '(inativo)'
-            active_cost_centers.append(
+
+            list_of_cost_centers.append(
                 data[filters[0]]
-                if include_inactive != 'S'
+                if not include_inactive
                 else f'{data[filters[0]]} {text}'
             )
 
@@ -59,13 +61,26 @@ def costs_centers(datas: list) -> list:
     if 'text' in locals():
         del text
 
-    # active_cost_centers.sort()
-
-    return [option, filters, active_cost_centers, copy_datas]
+    return [title, filters, list_of_cost_centers, copy_datas]
 
 
 def currencies(datas: list) -> list:
-    return ['', '', '']
+    copy_datas = []
+    filters = ('name', '')
+    list_of_currencies = []
+    title = 'moeda'
+
+    copy_datas = sanitize_data(
+        datas=datas, filters=filters, include_inactive=True
+    )
+
+    for data in copy_datas:
+        list_of_currencies.append(data[filters[0]])
+
+    if 'data' in locals():
+        del data
+
+    return [title, filters, list_of_currencies, copy_datas]
 
 
 def expenses(datas: list) -> list:
@@ -73,25 +88,128 @@ def expenses(datas: list) -> list:
 
 
 def expenses_type(datas: list) -> list:
-    return ['', '', '']
+    copy_datas = []
+    filters = ('description', 'on')
+    list_of_expenses_type = []
+    text = ''
+    title = 'tipo de despesa'
+
+    include_inactive = check_inclusion_of_inactive()
+    copy_datas = sanitize_data(
+        datas=datas, filters=filters, include_inactive=include_inactive
+    )
+
+    for data in copy_datas:
+        if data[filters[1]] or include_inactive:
+            if include_inactive:
+                if data[filters[1]]:
+                    text = '(ativo)'
+                else:
+                    text = '(inativo)'
+
+            list_of_expenses_type.append(
+                data[filters[0]]
+                if not include_inactive
+                else f'{data[filters[0]]} {text}'
+            )
+
+    if 'data' in locals():
+        del data
+
+    if 'include_inactive' in locals():
+        del include_inactive
+
+    if 'text' in locals():
+        del text
+
+    return [title, filters, list_of_expenses_type, copy_datas]
 
 
 def projects(datas: list) -> list:
-    return ['', '', '']
+    copy_datas = []
+    filters = ('name', 'on')
+    project_list = []
+    text = ''
+    title = 'projetos'
+
+    include_inactive = check_inclusion_of_inactive()
+    copy_datas = sanitize_data(
+        datas=datas, filters=filters, include_inactive=include_inactive
+    )
+
+    for data in copy_datas:
+        if data[filters[1]] or include_inactive:
+            if include_inactive:
+                if data[filters[1]]:
+                    text = '(ativo)'
+                else:
+                    text = '(inativo)'
+
+            project_list.append(
+                data[filters[0]]
+                if not include_inactive
+                else f'{data[filters[0]]} {text}'
+            )
+
+    if 'data' in locals():
+        del data
+
+    if 'include_inactive' in locals():
+        del include_inactive
+
+    if 'text' in locals():
+        del text
+
+    return [title, filters, project_list, copy_datas]
 
 
 def reports(datas: list) -> list:
-    return ['', '', '']
+    copy_datas = []
+    filters = ('description', 'on')
+    list_of_reports = []
+    text = ''
+    title = 'relatórios'
+
+    include_inactive = check_inclusion_of_inactive()
+    copy_datas = sanitize_data(
+        datas=datas, filters=filters, include_inactive=include_inactive
+    )
+
+    for data in copy_datas:
+        if data[filters[1]] or include_inactive:
+            if include_inactive:
+                if data[filters[1]]:
+                    text = '(ativo)'
+                else:
+                    text = '(inativo)'
+
+            list_of_reports.append(
+                data[filters[0]]
+                if not include_inactive
+                else f'{data[filters[0]]} {text}'
+            )
+
+    if 'data' in locals():
+        del data
+
+    if 'include_inactive' in locals():
+        del include_inactive
+
+    if 'text' in locals():
+        del text
+
+    return [title, filters, list_of_reports, copy_datas]
 
 
 def team_members(datas: list) -> list:
     copy_datas = []
-    filters = ['name', 'active']
-    include_inactive = ' '
+    filters = ('name', 'active')
     len_datas = len(datas)
     number_of_users = '0' + str(len_datas) if len_datas <= 9 else len_datas
-    option = 'usuário'
     text = f'Ao total existe(m) {number_of_users} usuário(s) cadastrado(s).'
+    title = 'usuário'
+    user_list = []
+
     division(number=1)
 
     format_print(
@@ -100,9 +218,13 @@ def team_members(datas: list) -> list:
         text=text,
     )
 
-    # INCLUIR VERIFICAÇÃO DE MEMBROS INATIVOS
-
-    copy_datas = data_ordering(datas=datas, sort_by_key=filters[0])
+    include_inactive = check_inclusion_of_inactive()
+    copy_datas = sanitize_data(
+        datas=datas, filters=filters, include_inactive=include_inactive
+    )
+    user_list = list_users(
+        datas=copy_datas, filters=filters, include_inactive=include_inactive
+    )
 
     if 'include_inactive' in locals():
         del include_inactive
@@ -116,4 +238,4 @@ def team_members(datas: list) -> list:
     if 'text' in locals():
         del text
 
-    return [option, filters, list_users(datas=datas), copy_datas]
+    return [title, filters, user_list, copy_datas]
