@@ -17,6 +17,6 @@ HEADERS = {
     'Authorization': 'xyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxy',  # Inserir o token
 }
 
-LINE_SIZE = 146
+LINE_SIZE = 156
 
 URL = 'https://api.vexpenses.com/v2/'
