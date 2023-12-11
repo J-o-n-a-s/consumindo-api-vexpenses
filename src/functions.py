@@ -98,7 +98,13 @@ def create_table(datas: list, options: list, user: int) -> list:
     for number, data in enumerate(datas):
         if number == user or user == -1:
             for option in copy_options:
-                row.append(data[option])
+                try:
+                    row.append(data[option])
+                except Exception as error:
+                    if 'name' in table[0]:
+                        del table[0][0]
+                        print(f'Error na coluna "name". Falha {error.__class__}')
+                    ...
             table.append(row[:])
             row.clear()
 
