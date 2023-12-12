@@ -1,8 +1,9 @@
 from os import name, system
 from time import time
 
-from file_header import END_POINTS, LINE_SIZE
 from requests import get, models
+
+from file_header import END_POINTS, LINE_SIZE
 
 
 def check_inclusion_of_inactive() -> bool:
@@ -161,12 +162,19 @@ def header_and_footer(option: bool = False) -> None:
 
     if option:
         texts.clear()
-        texts = ['Grato pela utilização. Até logo.']
+        texts = [
+            'Grato pela utilização. Até logo.',
+            'Pressione qualquer tecla para finalizar...'
+        ]
 
     for number, text in enumerate(texts):
         division(number=1)
         text = text.center(LINE_SIZE, ' ')
         format_print(fill_char=' ', line_size=LINE_SIZE, text=text)
+
+    if option:
+        division(number=1)
+        input()
 
     if 'number' in locals():
         del number
@@ -176,9 +184,6 @@ def header_and_footer(option: bool = False) -> None:
 
     if 'texts' in locals():
         del texts
-
-    if option:
-        division(number=1)
 
 
 def list_fields(datas: list) -> list:
