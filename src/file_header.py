@@ -8,7 +8,11 @@ END_POINTS = [
     {'menu': 'Membros da equipe', 'url': 'team-members'},
     {'menu': 'Moedas', 'url': 'currencies'},
     {'menu': 'Projetos', 'url': 'projects'},
-    {'menu': 'Relatórios', 'url': 'reports'},
+    {
+        'menu': 'Relatórios',
+        'url': 'reports?include=expenses,expenses.apportionment,expenses.expense_type,expenses.gps,'
+               'expenses.costs_center,user,payment_method,advance,approval,invoice,history',
+    },
     {'menu': 'Tipo de despesas', 'url': 'expenses-type'},
 ]
 
