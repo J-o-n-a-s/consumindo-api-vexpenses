@@ -35,6 +35,10 @@ if __name__ == '__main__':
         del response
         fields = list_fields(datas=datas)
         result_of_options = []
+
+        if len(selected_url) > 20:
+            selected_url = selected_url[:7]
+
         exec(
             'result_of_options = '
             + selected_url.replace('-', '_')
