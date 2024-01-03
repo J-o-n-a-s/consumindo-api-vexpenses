@@ -50,11 +50,17 @@ Nesta primeira versão, toda a interação com o software é realizada sem inter
 
 ### Bibliotecas e recursos utilizados
 
-...
+ - OS -> Biblioteca para funções do sistema operacional;
+ - Time -> Para adição de tempo e registro do início, fim e duração do processo;
+ - Tkinter -> Para utilização da caixa de diálogo de seleção de diretório para exportação de arquivo;
+ - Datetime -> Para pegar a data atual do sistema;
+ - Requests -> Para realizar o acesso a API do VExpenses;
+ - Openpyxl -> Para criação/escrita de arquivo XLSX;
+ - Pyinstaller -> Para criação do arquivo executável. Facilitando a utilização do programa mesmo em máquinas que não possuem o Python instalado.
 
 ### Funcionamento do programa
 
-...
+![Apresentação e menu de seleção inicial](img/menu_geral.png)
 
 ### Amostra do resultado da execução do programa
 
@@ -62,7 +68,10 @@ Nesta primeira versão, toda a interação com o software é realizada sem inter
 
 ## Instalação e execução do projeto
 
-...
+ - `pip install poetry` para instalar o gerenciador de pacotes
+ - `poetry install` para que o poetry instale os pacotes usados no projeto
+ - `poetry shell` para que o poetry crie um ambiente virtual
+ - `python src/main.py` para executar o projeto
 
 ## Licença
 
