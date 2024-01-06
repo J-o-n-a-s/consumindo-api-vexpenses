@@ -164,7 +164,7 @@ def header_and_footer(option: bool = False) -> None:
         texts.clear()
         texts = [
             'Grato pela utilização. Até logo.',
-            'Pressione qualquer tecla para finalizar...'
+            'Pressione a tecla "enter" para finalizar...'
         ]
 
     for number, text in enumerate(texts):
