@@ -53,6 +53,7 @@ Nesta primeira versão, toda a interação com o software é realizada sem inter
  - OS -> Biblioteca para funções do sistema operacional;
  - Time -> Para adição de tempo e registro do início, fim e duração do processo;
  - Tkinter -> Para utilização da caixa de diálogo de seleção de diretório para exportação de arquivo;
+ - Textwrap -> Para facilitar a quebra de textos para a impressão
  - Datetime -> Para pegar a data atual do sistema;
  - Requests -> Para realizar o acesso a API do VExpenses;
  - Openpyxl -> Para criação/escrita de arquivo XLSX;
