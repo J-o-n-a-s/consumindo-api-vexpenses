@@ -1,11 +1,28 @@
 from excel_files import save_file, select_path
-from execution_options import (advances, approval_flows, costs_centers,
-                               currencies, expenses, expenses_type, projects,
-                               reports, team_members)
+from execution_options import (
+    advances,
+    approval_flows,
+    costs_centers,
+    currencies,
+    expenses,
+    expenses_type,
+    projects,
+    reports,
+    team_members,
+)
 from file_header import HEADERS, URL
-from functions import (clear_screen, connection, create_table,
-                       header_and_footer, list_fields, option_selection,
-                       options_menu, read_datas, select_view, show_options)
+from functions import (
+    clear_screen,
+    connection,
+    create_table,
+    header_and_footer,
+    list_fields,
+    option_selection,
+    options_menu,
+    read_datas,
+    select_view,
+    show_options,
+)
 
 if __name__ == '__main__':
     # Cabeçalho

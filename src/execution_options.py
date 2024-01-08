@@ -1,6 +1,11 @@
 from file_header import LINE_SIZE
-from functions import (check_inclusion_of_inactive, division, format_print,
-                       list_users, sanitize_data)
+from functions import (
+    check_inclusion_of_inactive,
+    division,
+    format_print,
+    list_users,
+    sanitize_data,
+)
 
 
 def advances(datas: list) -> list:

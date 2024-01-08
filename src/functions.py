@@ -1,4 +1,5 @@
 from os import name, system
+from textwrap import wrap
 from time import time
 
 from requests import get, models
@@ -144,8 +145,10 @@ def format_print(fill_char: str = ' ', line_size: int = 116, text: str = '') -> 
     if text == '':
         initial_chars = '+' + fill_char
         final_chars = fill_char + '+'
-
-    print(initial_chars + text.ljust(line_size, fill_char) + final_chars)
+        print(initial_chars + text.ljust(line_size, fill_char) + final_chars)
+    else:
+        for new_text in wrap(text, line_size - 4):
+            print(initial_chars + new_text.ljust(line_size, fill_char) + final_chars)
 
     if 'final_chars' in locals():
         del final_chars
@@ -435,16 +438,85 @@ def select_view() -> str:
 
 
 def show_options(datas: list, fields: list, selected: int, options: list) -> None:
+
+    def check_levels(local_data: list, local_fields: list, level: int = 1):
+        for field in local_fields:
+            if type(local_data) is list:
+                value = local_data[0][field]
+            else:
+                value = local_data[field]
+            if type(value) is dict:
+                text = f'{"   " * level}{field.capitalize()}:'
+                format_print(
+                    fill_char=' ',
+                    line_size=LINE_SIZE,
+                    text=text
+                )
+                num = 0
+                new_fields = list_fields(datas=value['data'])
+                for new_dict in value['data']:
+                    num += 1
+                    text = f'{"   " * (level + 1)}{num}:'
+                    format_print(
+                        fill_char=' ',
+                        line_size=LINE_SIZE,
+                        text=text
+                    )
+                    check_levels(new_dict, new_fields, level + 2)
+            elif type(value) in (tuple, list, set):
+                text = f'{"   " * level}{field.capitalize()}:'
+                format_print(
+                    fill_char=' ',
+                    line_size=LINE_SIZE,
+                    text=text
+                )
+                for counter, var in enumerate(value):
+                    text = f'{"   " * (level + 1)}{counter + 1} = {var}'
+                    format_print(
+                        fill_char=' ',
+                        line_size=LINE_SIZE,
+                        text=f'{"   " * level}{field.capitalize()}:'
+                    )
+            else:
+                text = f'{"   " * level}Chave "{field}" o valor é "{local_data[field]}".'
+                format_print(
+                    fill_char=' ',
+                    line_size=LINE_SIZE,
+                    text=text
+                )
+
+        if 'field' in locals():
+            del field
+
+        if 'text' in locals():
+            del text
+
+        if 'counter' in locals():
+            del counter
+
+        if 'var' in locals():
+            del var
+
+        if 'num' in locals():
+            del num
+
+        if 'new_dict' in locals():
+            del new_dict
+
+        if 'new_fields' in locals():
+            del new_fields
+
     if selected == -1:
         for number, data in enumerate(datas):
             division(number=1)
 
-            for field in fields:
-                format_print(
-                    fill_char=' ',
-                    line_size=LINE_SIZE,
-                    text=f'Para {options[0]} "{options[2][number]}" e chave "{field}" o valor é "{data[field]}".'
-                )
+            format_print(
+                fill_char=' ',
+                line_size=LINE_SIZE,
+                text=f'Para {options[0]} "{options[2][number]}":'
+            )
+
+            check_levels(data, fields)
 
         if 'number' in locals():
             del number
@@ -453,15 +525,13 @@ def show_options(datas: list, fields: list, selected: int, options: list) -> Non
         division(number=1)
         data = datas[selected]
 
-        for field in fields:
-            format_print(
-                fill_char=' ',
-                line_size=LINE_SIZE,
-                text=f'Para {options[0]} "{options[2][selected]}" e chave "{field}" o valor é "{data[field]}".'
-            )
+        format_print(
+            fill_char=' ',
+            line_size=LINE_SIZE,
+            text=f'Para {options[0]} "{options[2][selected]}":'
+        )
+
+        check_levels(data, fields)
 
     if 'data' in locals():
         del data
-
-    if 'field' in locals():
-        del field
