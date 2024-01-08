@@ -15,7 +15,7 @@
 [license-shield]: https://img.shields.io/github/license/J-o-n-a-s/consumindo-api-vexpenses.svg?style=for-the-badge
 [license-url]: https://github.com/J-o-n-a-s/consumindo-api-vexpenses/blob/master/LICENSE
 
-# Consumindo API do VExpenses
+# Consumindo API do VExpenses (PoC)
 
 **SEJA BEM-VINDO A ESTE REPOSITÓRIO!!!**
 
@@ -34,7 +34,7 @@
 
 ## Introdução
 
-Projeto para manipular as informações do VExpenses atráves da API disponibilizada pela empresa. Importa salientar que para ter acesso ao *```token público```* para autenticação é necessário ter uma conta VExpenses (*não estou fazendo propaganda e não recebi patrocínio para esses desenvolvimento*), cada empresa possui um *```token público```* diferente.
+Essa é uma PoC para manipular as informações do VExpenses atráves da API disponibilizada pela empresa. Importa salientar que para ter acesso ao *```token público```* para autenticação é necessário ter uma conta VExpenses (*não estou fazendo propaganda e não recebi patrocínio para esses desenvolvimento*), cada empresa possui um *```token público```* diferente.
 
 O intuito do projeto é realizar consultas simples sem interface gráfica para automatizar as atividades repetitivas, tediosas e evitar erros humanos durante essas coletas. Porém posteriormente posso pensar em realizar algumas melhorias no software facilitando ainda mais a sua utilização e agregando funcionalidades facilitadoras.
 
