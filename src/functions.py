@@ -150,11 +150,14 @@ def format_print(fill_char: str = ' ', line_size: int = 116, text: str = '') -> 
         for new_text in wrap(text, line_size - 4):
             print(initial_chars + new_text.ljust(line_size, fill_char) + final_chars)
 
-    if 'final_chars' in locals():
-        del final_chars
-
     if 'initial_chars' in locals():
         del initial_chars
+
+    if 'final_chars' in locals():
+        del final_chars
+        
+    if 'new_text' in locals():
+        del new_text
 
 
 def header_and_footer(option: bool = False) -> None:
