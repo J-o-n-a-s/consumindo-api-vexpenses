@@ -39,8 +39,7 @@ if __name__ == '__main__':
         results_list = connection(headers=HEADERS, url=URL + selected_url)
 
         # Retorno da tentativa de conexão
-        connected = results_list[0]
-        response = results_list[1]
+        connected, response = results_list
 
         if 'results_list' in locals():
             del results_list
