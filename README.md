@@ -97,10 +97,10 @@ A imagem abaixo apresenta o resultado final da seleção da opção 6 do menu in
 
 ## Instalação e execução do projeto
 
- - `pip install poetry` para instalar o gerenciador de pacotes
- - `poetry install` para que o poetry instale os pacotes usados no projeto
- - `poetry shell` para que o poetry crie um ambiente virtual
- - `python src/main.py` para executar o projeto
+ - `pip install poetry` para instalar o gerenciador de pacotes;
+ - `poetry install` para que o poetry instale os pacotes usados no projeto;
+ - `poetry shell` para que o poetry crie um ambiente virtual;
+ - `python src/main.py` para executar o projeto.
 
 ## Licença
 
